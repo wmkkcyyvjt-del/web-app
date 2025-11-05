@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Familiehandleliste</title>
+</head>
+<body>
+ <style>
+  .kjopt {
+    text-decoration: line-through;
+    color: gray;
+    opacity: 0.7;
+  }
+
+  .kjoptBtn {
+    padding: 2px;
+    margin-right: 2px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+</style>
+
+
+   <a href="forside.html">tilbake til forsiden</a>
+  <h1>middagsforslag</h1>
+
+  <input type="text" id="forslagInputt" placeholder="Skriv inn en forslag">
+  <button id="leggTilBtn">Legg til</button>
+
+  <ul id="handleliste"></ul>
+
+  <script>
+    const knapp = document.getElementById("leggTilBtn");
+    const input = document.getElementById("forslagInputt");
+    const liste = document.getElementById("handleliste");
+
+    let forslagr = JSON.parse(localStorage.getItem("forslagr")) || [];    //local storage kode
+     
+  function visListe() {
+  liste.innerHTML = ""; // tøm lista først
+
+  for (let i = 0; i < forslagr.length; i++) {
+    const li = document.createElement("li");
+
+    // lag kjøpt-knapp
+    const kjoptBtn = document.createElement("button");
+    kjoptBtn.textContent = "✓";
+    kjoptBtn.classList.add("kjoptBtn");
+    
+    const slettBtn = document.createElement("button");
+slettBtn.textContent = "🗑️";
+slettBtn.classList.add("kjoptBtn");
+slettBtn.addEventListener("click", function() {
+  forslagr.splice(i, 1);
+  lagreListe();
+  visListe();
+});
+li.appendChild(slettBtn);
+
+
+    // hva som skjer når man trykker på knappen
+    kjoptBtn.addEventListener("click", function() {
+      forslagr[i].kjopt = !forslagr[i].kjopt; // bytt mellom true/false
+      lagreListe();
+      visListe(); // oppdater visningen
+    });
+
+    // lag teksten
+    const forslagTekst = document.createElement("span");
+    forslagTekst.textContent = forslagr[i].navn;
+
+    // vis streken hvis kjøpt
+    if (forslagr[i].kjopt) {
+      forslagTekst.classList.add("kjopt");
+    }
+
+    // sett sammen alt
+    li.appendChild(kjoptBtn);
+    li.appendChild(forslagTekst);
+    liste.appendChild(li);
+  }
+}
+ 
+    function lagreListe() {
+      localStorage.setItem("forslagr", JSON.stringify(forslagr));  //local storage kode
+    }
+
+    
+    knapp.addEventListener("click", function() {  //local storage kode
+      const forslag = input.value.trim();
+      if (forslag !== "") {
+     forslagr.push({ navn: forslag, kjopt: false });
+        lagreListe();
+        visListe();
+        input.value = "";
+      }
+    });
+
+   
+visListe();
+
+
+
+  </script>
+</body>
+</html>
