@@ -22,11 +22,14 @@
 </style>
 
 
-   <a href="index.html">tilbake til forsiden</a>
-  <h1>middagsforslag</h1>
-
+   <a href="forside.html">tilbake til forsiden</a>
+  <h1>Familiehandleliste</h1>
+  <p></p>
   <input type="text" id="forslagInputt" placeholder="Skriv inn en forslag">
-  <button id="leggTilBtn">Legg til</button>
+  <button id="leggTilBtn">Legg til</button><br><br>
+  <button onclick="tilfeldigforslag()">tilfeldig forslag</button>
+  <p id="tilfeldigforslag" style="display:inline;"></p>
+  
 
   <ul id="handleliste"></ul>
 
@@ -34,11 +37,13 @@
     const knapp = document.getElementById("leggTilBtn");
     const input = document.getElementById("forslagInputt");
     const liste = document.getElementById("handleliste");
-
-    let forslagr = JSON.parse(localStorage.getItem("forslagr")) || [];    //local storage kode
+    const Brukernavn = JSON.parse(localStorage.getItem("Bruker"));
+    let forslagr = JSON.parse(localStorage.getItem(Brukernavn + "forslagr")) || [];    //local storage kode
+    document.querySelector("p").textContent = `logged in as ${Brukernavn}`;
      
   function visListe() {
   liste.innerHTML = ""; // tøm lista først
+  forslagr = JSON.parse(localStorage.getItem(Brukernavn + "forslagr")) || []; 
 
   for (let i = 0; i < forslagr.length; i++) {
     const li = document.createElement("li");
@@ -83,7 +88,7 @@ li.appendChild(slettBtn);
 }
  
     function lagreListe() {
-      localStorage.setItem("forslagr", JSON.stringify(forslagr));  //local storage kode
+      localStorage.setItem(Brukernavn + "forslagr", JSON.stringify(forslagr));  //local storage kode
     }
 
     
@@ -96,7 +101,13 @@ li.appendChild(slettBtn);
         input.value = "";
       }
     });
-
+function tilfeldigforslag () {
+   var forslag = liste.children;
+   var forslagmengde = forslag.length;
+    
+   document.getElementById("tilfeldigforslag").innerHTML = forslag[Math.floor(Math.random() * forslagmengde)].textContent.replace("🗑️✓","");
+   //;
+}
    
 visListe();
 
@@ -105,4 +116,5 @@ visListe();
   </script>
 </body>
 </html>
+
 
