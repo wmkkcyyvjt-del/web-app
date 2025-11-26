@@ -3,11 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
+    <h2>Login</h2>
+    <input type="text" id="login">
+    <p></p>
+    <button onclick="lagreListe()">logg inn</button>
     <h1>handleliste</h1>
     <a href="liste.html">handleliste</a>
     <h1>middagsforslag</h1>
     <a href="middagsforslag.html">middagsforslag</a>
+<script>
+    function lagreListe() {
+        let login = document.getElementById("login").value;
+      localStorage.setItem("Bruker", JSON.stringify(login)); 
+      document.querySelector("p").textContent = `logged in as ${login}`;
+    }
+</script>
 </body>
 </html>
