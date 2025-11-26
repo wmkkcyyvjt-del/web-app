@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Familie handleliste</title>
+  <title>Familiehandleliste</title>
 </head>
 <body>
  <style>
@@ -22,11 +22,12 @@
 </style>
 
 
-   <a href="index.html">tilbake til forsiden</a>
+   <a href="forside.html">tilbake til forsiden</a>
   <h1>Familiehandleliste</h1>
-
+  <p></p>
   <input type="text" id="vareInputt" placeholder="Skriv inn en vare">
-  <button id="leggTilBtn">Legg til</button>
+  <button id="leggTilBtn">Legg til</button><br>
+
 
   <ul id="handleliste"></ul>
 
@@ -34,11 +35,13 @@
     const knapp = document.getElementById("leggTilBtn");
     const input = document.getElementById("vareInputt");
     const liste = document.getElementById("handleliste");
-
-    let varer = JSON.parse(localStorage.getItem("varer")) || [];    //local storage kode
+    const Brukernavn = JSON.parse(localStorage.getItem("Bruker")) || []; 
+    let varer = JSON.parse(localStorage.getItem(Brukernavn + "varer")) || [];    //local storage kode
+    document.querySelector("p").textContent = `logged in as ${Brukernavn}`;
      
   function visListe() {
   liste.innerHTML = ""; // tøm lista først
+  varer = JSON.parse(localStorage.getItem(Brukernavn + "varer")) || []; 
 
   for (let i = 0; i < varer.length; i++) {
     const li = document.createElement("li");
@@ -83,7 +86,7 @@ li.appendChild(slettBtn);
 }
  
     function lagreListe() {
-      localStorage.setItem("varer", JSON.stringify(varer));  //local storage kode
+      localStorage.setItem(Brukernavn + "varer", JSON.stringify(varer));  //local storage kode
     }
 
     
@@ -105,6 +108,4 @@ visListe();
   </script>
 </body>
 </html>
-
-
 
